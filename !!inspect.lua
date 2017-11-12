@@ -66,7 +66,7 @@ end
 p = setmetatable({}, {
 	__metatable=false,
 	__call=inspect,
-	__div=inspect,
+	__pow=inspect,
 	__index = function(self, key)
 		setting(key)
 		return self

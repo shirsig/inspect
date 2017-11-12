@@ -29,8 +29,8 @@ function print_pair(k, v, depth)
 end
 
 function print_table(t, depth)
-	for i, v in ipairs(t) do
-		print_pair(i, v, depth)
+	for i = 1, getn(t) do
+		print_pair(i, t[i], depth)
 	end
 	for k, v in pairs(t) do
 		if type(k) ~= 'number' or k < 1 or k > getn(t) then
@@ -43,7 +43,7 @@ function inspect(_, ...)
 	local n = arg.n
 	arg.n = nil
 	if n == 0 then
-		print('[1] = nil')
+		print('void')
 	else
 		table.setn(arg, n)
 		max_depth = max_depth or 2

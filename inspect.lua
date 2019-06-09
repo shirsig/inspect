@@ -43,7 +43,7 @@ function inspect(_, ...)
 	local n = arg.n
 	arg.n = nil
 	if n == 0 then
-		print('void')
+		print('-')
 	else
 		table.setn(arg, n)
 		max_depth = max_depth or 2

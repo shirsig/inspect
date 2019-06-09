@@ -1,4 +1,4 @@
-local print, format_string, format_value, print_pair, print_table, inspect, setting, max_depth
+local print, format_string, format_value, print_pair, print_table, print_args, inspect, setting, max_depth
 
 function print(msg)
 	DEFAULT_CHAT_FRAME:AddMessage(msg, 1, 0, 0)
@@ -21,36 +21,40 @@ function print_pair(k, v, depth)
 			if depth == max_depth then
 				print(padding .. '    ...')
 			else
-				print_table(v, depth + 1)
+				print_table(depth + 1, v)
 			end
 			print(padding .. '}')
 		end
 	end
 end
 
-function print_table(t, depth)
-	for i = 1, getn(t) do
+function print_table(depth, t)
+	for i = 1, #t do
 		print_pair(i, t[i], depth)
 	end
 	for k, v in pairs(t) do
-		if type(k) ~= 'number' or k < 1 or k > getn(t) then
+		if type(k) ~= 'number' or k < 1 or k > #t then
 			print_pair(k, v, depth)
 		end
 	end
 end
 
+function print_args(...)
+	local n = select('#', ...)
+	for i = 1, n do
+		print_pair(i, select(i, ...), 0)
+	end
+end
+
 function inspect(_, ...)
-	local n = arg.n
-	arg.n = nil
-	if n == 0 then
-		print('void')
+	if select('#', ...) == 0 then
+		print('-')
 	else
-		table.setn(arg, n)
 		max_depth = max_depth or 2
-		print_table(arg, 0)
+		print_args(...)
 		max_depth = nil
 	end
-	return unpack(arg)
+	return ...
 end
 
 local function setting(v)
